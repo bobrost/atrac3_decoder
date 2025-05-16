@@ -88,10 +88,21 @@ namespace {
     return true;
   }
 
+  TestResult testFastInverseMdct() {
+    constexpr float kTolerance = 0.0001f;
+    FloatArray input = {1,2,3,4,5,6,7,8};
+    FloatArray bruteOutput(16);
+    FloatArray fastOutput(16);
+    DCT::MDCT_Inverse_Brute(input.data(), 8, bruteOutput.data(), 1.0f);
+    DCT::MDCT_Inverse_Fast(input.data(), 8, fastOutput.data(), 1.0f);
+    return isClose(bruteOutput, fastOutput, kTolerance);
+  }
+
 } // namespace
 
 void addDctTests(TestRunner& runner) {
   runner.add("sparse array", testSparseArray);
   runner.add("brute MDCT", testBruteMDCT);
   runner.add("inverse MDCT (known values)", testBasicInverseMdct);
+  runner.add("inverse MDCT fast", testFastInverseMdct);
 }

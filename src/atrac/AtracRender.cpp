@@ -115,7 +115,7 @@ namespace Atrac3Render {
 
       ChannelRenderState::Subband& subband = state.subbands[bandIndex];
       // TODO: use fast DCT
-      DCT::MDCT_Inverse_Brute(spectrumSubbands[bandIndex], kInputDctSize, subband.unscaled.data(), kDctScale);
+      DCT::MDCT_Inverse_Fast(spectrumSubbands[bandIndex], kInputDctSize, subband.unscaled.data(), kDctScale);
       multiplyArrays(subband.unscaled, state.constants.decodingScalingWindow, subband.windowed);
 
       // Calculate and apply gain compensation scaling per subband. The previous frame's gain data

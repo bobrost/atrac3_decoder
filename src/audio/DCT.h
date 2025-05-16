@@ -13,8 +13,9 @@ namespace DCT {
   // Note that outputSignals must be twice as large as inputFrequencies.
   // @param inputFrequencies The input frequencies buffer
   // @param numInputs Size of the input frequencies, must be a power of 2
-  // @param outputSamples The output samples buffer, must be size (numFrequencies*2)
-  // @return Whether successful
+  // @param outputSignal The output samples buffer, must be size (numInputs*2)
+  // @param outputScale Optional constant scale to apply to outputs
+  // @return Whether successful (numInputs was a power of 2)
   bool MDCT_Inverse_Brute(const float* inputFrequencies, int numInputs, float* outputSignal, float outputScale=1.0f);
 
   // resizes the output signal appropriately
@@ -22,4 +23,12 @@ namespace DCT {
     const std::vector<float>& inputFrequencies,
     std::vector<float>& outputSignal, float outputScale);
 
+  // Perform an Inverse MDCT using a fast method.
+  // @param inputFrequencies The input frequencies buffer
+  // @param numInputs Size of the input frequencies, must be a power of 2
+  // @param outputSignal The output samples buffer, must be size (numInputs*2)
+  // @param outputScale Optional constant scale to apply to outputs
+  // @return Whether successful (numInputs was a power of 2)
+  bool MDCT_Inverse_Fast(const float* inputFrequencies, int numInputs, float* outputSignal, float outputScale=1.0f);
+    
 } // namespace DCT

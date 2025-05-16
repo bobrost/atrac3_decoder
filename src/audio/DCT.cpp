@@ -1,6 +1,7 @@
 #include "DCT.h"
 #include "../util/ArrayUtil.h"
 #include "../util/MathUtil.h"
+#include "FFT.h"
 #include <cmath>
 
 
@@ -110,6 +111,51 @@ namespace DCT {
     outputSignal.resize(inputFrequencies.size() * 2);
     return MDCT_Inverse_Brute(inputFrequencies.data(), (int)inputFrequencies.size(),
       outputSignal.data(), outputScale);
+  }
+
+
+  // Note: For further research, MDCT can be calculated as an N/4 FFT
+  // https://ccrma.stanford.edu/~bosse/proj/node28.html
+
+  bool MDCT_Inverse_Fast(const float* inputFrequencies, int numInputs, float* outputSignal, float outputScale) {
+    if (!IsPowerOfTwo(numInputs)) {
+      return false;
+    }
+    // Note: by convention, inputs index by [k] and outputs by [n]
+    const int N = numInputs;
+    const int nFFT = 2 * N; // The FFT backing the computation is larger than the MDCT
+
+    // Prepare temporary real and imag arrays for a size 2N FFT.
+    // Zero pad the second half (from N through 2N-1), and ensure they
+    // are at least 2N size. In this case, we're actually sizing them to
+    // exactly 2N, but that should not be a problem since all of our MDCT
+    // calculations are the same size.
+    // (Note: Not threadsafe due to static vectors)
+    static std::vector<float> real(nFFT, 0.0f);
+    static std::vector<float> imag(nFFT, 0.0f);
+    real.assign(nFFT, 0.0f);
+    imag.assign(nFFT,0.0f);
+
+    // Preprocess: complex rotation of inputFrequencies
+    const float minusPiOver2N = -kPi / (2.0f * N);
+    for (int k = 0; k < N; ++k) {
+      float theta = minusPiOver2N * (N+1) * k;
+      real[k] = inputFrequencies[k] * std::cos(theta);
+      imag[k] = inputFrequencies[k] * std::sin(theta);
+    }
+
+    // Perform FFT
+    FFT::forwardFFT(real.data(), imag.data(), nFFT);
+
+    // Postprocess: another complex rotation
+    float twoOverN = 2.0f / static_cast<float>(N);
+    outputScale *= (N/2); // Account for the FFT internal scaling
+    for (int n = 0; n < nFFT; ++n) {
+      float theta = minusPiOver2N * (0.5f + N / 2.0f + n);
+      float x = (real[n] * std::cos(theta)) - (imag[n] * std::sin(theta));
+      outputSignal[n] = outputScale * x * twoOverN;
+    }
+    return true;
   }
 
 } // namespace DCT

@@ -8,7 +8,7 @@ CFLAGS = -std=c++11 -Wall -Wextra \
   -Wno-unused-function \
 	-Wno-unused-parameter \
 	-Wno-unused-variable \
-	-g -O0
+	-g -O3
 
 # Directories
 SRCDIR = ./src
