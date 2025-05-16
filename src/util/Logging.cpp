@@ -7,7 +7,7 @@
     if (ILogger* logger = ILogger::Get()) { \
       va_list args; \
       va_start(args, format); \
-      logger->LogMessage(Level, category, format, args); \
+      logger->logMessage(Level, category, format, args); \
       va_end(args); \
     } \
   }
@@ -27,7 +27,7 @@ ILogger* ILogger::Get() {
   return _globalLogger;
 }
 
-const char* ILogger::GetLevelName(LogLevel level) {
+const char* ILogger::getLevelName(LogLevel level) {
   switch(level) {
     case LogLevel::Verbose:
       return "Verbose";
@@ -42,22 +42,22 @@ const char* ILogger::GetLevelName(LogLevel level) {
   return "";
 }
 
-void PrintfLogger::SetLevel(LogLevel level) {
+void PrintfLogger::setLevel(LogLevel level) {
   _level = level;
 }
 
-void ILogger::LogMessage(LogLevel level, const char* category, const char* format, ...) {
+void ILogger::logMessage(LogLevel level, const char* category, const char* format, ...) {
   va_list args;
   va_start(args, format);
-  LogMessage(level, category, format, args);
+  logMessage(level, category, format, args);
   va_end(args);
 }
 
-void PrintfLogger::LogMessage(LogLevel level, const char* category, const char* format, va_list args) {
+void PrintfLogger::logMessage(LogLevel level, const char* category, const char* format, va_list args) {
   if (level < _level) {
     return;
   }
-  printf("[%s] [%s] ", GetLevelName(level), category);
+  printf("[%s] [%s] ", getLevelName(level), category);
   vprintf(format, args);
   printf("\n");
 }

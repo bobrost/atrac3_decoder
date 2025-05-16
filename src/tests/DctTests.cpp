@@ -6,40 +6,6 @@
 namespace {
   constexpr float kTolerance = 0.00001f;
 
-  TestResult testSparseArray() {
-    // Test the basic sparse array
-    FloatArray values = {0,1,2,3,4,5,6,7};
-    SparseArray sparseValues(values);
-    if (sparseValues.size() != 8) {
-      return "SparseArray from FloatArray wrong size";
-    }
-    for (int i=0; i<8; ++i) {
-      if (sparseValues.get(i) != values[i]) {
-        return "SparseArray[i] incorrect";
-      }
-    }
-
-    // Test float array initialization, for internal test purposes
-    if (!isClose(sparseValues, SparseArray(values.data(), 8), kTolerance)) {
-      return "Initialization failure";
-    }
-
-    // Test offseting
-    FloatArray valuesOffset = {2,3,4,5,6,7};
-    SparseArray sparseOffset = sparseValues.offset(2);
-    if (!isClose(SparseArray(valuesOffset), sparseOffset, kTolerance)) {
-      return "offset failed";
-    }
-
-    // Test swapping
-    FloatArray swapped = {2,3,7,5,6,4};
-    sparseOffset.swapValues(2,5);
-    if (!isClose(SparseArray(swapped), sparseOffset, kTolerance)) {
-      return "swapValues failed";
-    }
-    return true;
-  }
-
   TestResult testBruteMDCT() {
     FloatArray input = {1,2,3,4,5,6,7,8};
     FloatArray expected = {
@@ -101,7 +67,6 @@ namespace {
 } // namespace
 
 void addDctTests(TestRunner& runner) {
-  runner.add("sparse array", testSparseArray);
   runner.add("brute MDCT", testBruteMDCT);
   runner.add("inverse MDCT (known values)", testBasicInverseMdct);
   runner.add("inverse MDCT fast", testFastInverseMdct);

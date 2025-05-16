@@ -8,7 +8,7 @@
 namespace DCT {
 
   bool DCT2_Brute(const float* inputSignal, float* outputFrequencies, int N) {
-    if (!IsPowerOfTwo(N)) {
+    if (!isPowerOfTwo(N)) {
       return false;
     }
     const float piOverN = kPi / static_cast<float>(N);
@@ -25,7 +25,7 @@ namespace DCT {
 
   bool DCT2_Inverse_Brute(const float* inputFrequencies, float* outputSignal, int N, float outputScale) {
     // Note: The DCT-III is the inverse of DCT-II, times a scale factor
-    if (!IsPowerOfTwo(N)) {
+    if (!isPowerOfTwo(N)) {
       return false;
     }
 
@@ -63,7 +63,7 @@ namespace DCT {
   }
 
   bool MDCT_Brute(const float* inputSignal, int numInputs, float* outputFrequencies) {
-    if (!IsPowerOfTwo(numInputs)) {
+    if (!isPowerOfTwo(numInputs)) {
       return false;
     }
     // for 2N input samples and N output frequencies
@@ -118,7 +118,7 @@ namespace DCT {
   // https://ccrma.stanford.edu/~bosse/proj/node28.html
 
   bool MDCT_Inverse_Fast(const float* inputFrequencies, int numInputs, float* outputSignal, float outputScale) {
-    if (!IsPowerOfTwo(numInputs)) {
+    if (!isPowerOfTwo(numInputs)) {
       return false;
     }
     // Note: by convention, inputs index by [k] and outputs by [n]

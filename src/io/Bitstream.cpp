@@ -1,6 +1,7 @@
 #include "Bitstream.h"
 #include "util/Logging.h"
 #include "io/IO.h"
+#include "util/MathUtil.h"
 
 namespace {
   void logBits(int numBits, int value) {
@@ -46,7 +47,7 @@ int BitstreamReader::getBits(size_t numBits) {
 
 int BitstreamReader::getSignedBits(size_t numBits) {
   int encoded = getBits(numBits);
-  return IO::twosComplementToSigned(encoded, numBits);
+  return twosComplementToSigned(encoded, numBits);
 }
 
 bool BitstreamReader::tryGetBits(size_t numBits, int& outTarget) {

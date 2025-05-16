@@ -1,2 +1,7 @@
 .DS_Store
-
+.vscode
+data/play_dead_atrac3_lp2.wav
+build/
+test
+decoder
+output.wav

@@ -89,20 +89,7 @@ bool isClose(const FloatArray& a, const FloatArray& b, float tolerance) {
   }
   int n = (int)a.size();
   for (int i=0; i<n; ++i) {
-    if (!IsClose(a[i], b[i], tolerance)) {
-      return false;
-    }
-  }
-  return true;
-}
-
-bool isClose(const SparseArray& a, const SparseArray& b, float tolerance) {
-  if (a.size() != b.size()) {
-    return false;
-  }
-  int n = (int)a.size();
-  for (int i=0; i<n; ++i) {
-    if (!IsClose(a.get(i), b.get(i), tolerance)) {
+    if (!isClose(a[i], b[i], tolerance)) {
       return false;
     }
   }
@@ -177,13 +164,4 @@ void printArray(const char* label, const float* values, int numValues) {
 
 void printArray(const char* label, const FloatArray& values) {
   printArray(label, values.data(), (int)values.size());
-}
-
-void printArray(const char* label, const SparseArray& values) {
-  printf("%s: ", label);
-  for (int i=0; i<(int)values.size(); ++i) {
-    printf("%s%g", (i==0?"":", "), values.get(i));
-  }
-  printf("\n");
-
 }

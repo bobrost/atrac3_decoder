@@ -23,20 +23,19 @@ public:
   static ILogger* Get();
 
   virtual ~ILogger() = default;
-  virtual void SetLevel(LogLevel level) = 0;
-
-  virtual void LogMessage(LogLevel level, const char* category, const char* format, ...);
-  virtual void LogMessage(LogLevel level, const char* category, const char* format, va_list args) = 0;
+  virtual void setLevel(LogLevel level) = 0;
+  virtual void logMessage(LogLevel level, const char* category, const char* format, ...);
+  virtual void logMessage(LogLevel level, const char* category, const char* format, va_list args) = 0;
 protected:
-  static const char* GetLevelName(LogLevel level);
+  static const char* getLevelName(LogLevel level);
   static ILogger* _globalLogger;
 };
 
 class PrintfLogger : public ILogger {
 public:
   virtual ~PrintfLogger() = default;
-  void SetLevel(LogLevel level) override;
-  void LogMessage(LogLevel level, const char* category, const char* format, va_list args) override;
+  void setLevel(LogLevel level) override;
+  void logMessage(LogLevel level, const char* category, const char* format, va_list args) override;
 protected:
 private:
   LogLevel _level = LogLevel::Verbose;

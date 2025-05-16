@@ -94,7 +94,7 @@ int runDecoder(const DecoderOptions& options) {
 int main(int argn, char** argv) {
   // Make sure the logger exists so the command line options parser can output errors initially
   PrintfLogger logger;
-  logger.SetLevel(LogLevel::Error);
+  logger.setLevel(LogLevel::Error);
   ILogger::Set(&logger);
 
   // Set up initial options
@@ -114,7 +114,7 @@ int main(int argn, char** argv) {
     optionsParser.printHelp();
     return -1;
   }
-  logger.SetLevel(options.logLevel);
+  logger.setLevel(options.logLevel);
 
   // Run the decoder
   return runDecoder(options);

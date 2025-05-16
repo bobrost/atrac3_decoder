@@ -1,6 +1,7 @@
 #include "WavFile.h"
 #include "IO.h"
-#include "../util/Logging.h"
+#include "util/Logging.h"
+#include "util/MathUtil.h"
 
 namespace WavFileInternal {
 
@@ -455,7 +456,7 @@ void WavWriter::close() {
 
 int16_t WavWriter::normalizedToSigned(float v) const {
     int i = static_cast<int>(v * 32768.0f);
-    return static_cast<int16_t>(IO::clamp(i, -32768, 32767));
+    return static_cast<int16_t>(clamp(i, -32768, 32767));
 }
 
 
